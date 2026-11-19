@@ -1,0 +1,1 @@
+`clone-of-1405.json` is **deliberately invalid test data**: a verbatim copy of 1405 labelled as another year. `tests/holidays-pack.test.js` feeds it to the holiday tooling to prove that cloned years are rejected. Never use it as holiday data.

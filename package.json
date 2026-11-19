@@ -1,0 +1,134 @@
+{
+  "name": "izi-datepicker",
+  "version": "1.0.0",
+  "description": "iZiDatePicker: an easy, zero-dependency Jalali (Persian / Solar Hijri) and Gregorian date picker. RTL-first, accessible, holiday-aware, headless-capable.",
+  "keywords": [
+    "datepicker",
+    "date-picker",
+    "date-range",
+    "calendar",
+    "jalali",
+    "persian",
+    "shamsi",
+    "solar-hijri",
+    "gregorian",
+    "rtl",
+    "time-picker",
+    "booking",
+    "holidays",
+    "i18n",
+    "a11y",
+    "vanilla-js",
+    "zero-dependency"
+  ],
+  "license": "MIT",
+  "author": "iZiDatePicker contributors",
+  "homepage": "https://github.com/yasproject/iZiDatePicker#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yasproject/iZiDatePicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yasproject/iZiDatePicker/issues"
+  },
+  "type": "commonjs",
+  "main": "./izi-datepicker.js",
+  "module": "./izi-datepicker.mjs",
+  "browser": "./izi-datepicker.min.js",
+  "unpkg": "./izi-datepicker.min.js",
+  "jsdelivr": "./izi-datepicker.min.js",
+  "types": "./izi-datepicker.d.ts",
+  "style": "./izi-datepicker.css",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./izi-datepicker.d.ts",
+      "import": "./izi-datepicker.mjs",
+      "require": "./izi-datepicker.js",
+      "default": "./izi-datepicker.js"
+    },
+    "./css": "./izi-datepicker.css",
+    "./izi-datepicker.css": "./izi-datepicker.css",
+    "./locales": {
+      "import": "./izi-datepicker.locales.mjs",
+      "require": "./izi-datepicker.locales.js",
+      "default": "./izi-datepicker.locales.js"
+    },
+    "./react": {
+      "types": "./wrappers/react.d.ts",
+      "import": "./wrappers/react.mjs"
+    },
+    "./vue": {
+      "types": "./wrappers/vue.d.ts",
+      "import": "./wrappers/vue.mjs"
+    },
+    "./element": {
+      "types": "./wrappers/element.d.ts",
+      "import": "./wrappers/element.mjs"
+    },
+    "./holidays/*": "./data/holidays/*",
+    "./holidays-bundle": "./data/holidays/bundle.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "izi-datepicker.js",
+    "izi-datepicker.mjs",
+    "izi-datepicker.min.js",
+    "izi-datepicker.min.js.map",
+    "izi-datepicker.css",
+    "izi-datepicker.d.ts",
+    "izi-datepicker.locales.js",
+    "izi-datepicker.locales.mjs",
+    "wrappers",
+    "data/holidays",
+    "tools/build-holidays.mjs",
+    "tools/update-holidays.mjs",
+    "README.md",
+    "README.fa.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "size": "node tools/build.mjs --size-only",
+    "typecheck": "tsc --noEmit --strict izi-datepicker.d.ts",
+    "test": "node tests/smoke.test.js && node tests/fa.test.js && node tests/features.test.js && node tests/features2.test.js && node tests/features3.test.js && node tests/gregorian.test.js && node tests/holidays-pack.test.js && node tests/wrappers.test.mjs && node tests/docs.test.js && node tests/links.test.js",
+    "test:browser": "node tests/browser/browser.test.mjs",
+    "test:all": "npm run typecheck && npm test && npm run test:browser",
+    "holidays": "node tools/build-holidays.mjs",
+    "holidays:check": "node tools/update-holidays.mjs --check",
+    "prepublishOnly": "npm run build && npm run test:all",
+    "screenshots": "node tools/screenshots.mjs"
+  },
+  "config": {
+    "budgetGzip": 38000
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "vue": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.0",
+    "jalaali-js": "^2.0.0",
+    "jsdom": "^26.0.0",
+    "puppeteer": "^24.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "terser": "^5.36.0",
+    "typescript": "^5.6.0",
+    "vue": "^3.5.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

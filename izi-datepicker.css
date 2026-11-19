@@ -1,0 +1,629 @@
+/*!
+ * iZiDatePicker v5 - stylesheet
+ * RTL-first via logical properties (works unchanged in LTR), custom-property theming,
+ * light / dark / auto. No preprocessor. Class names are backward compatible with v4
+ * where the meaning is unchanged (.izi-container, .izi-day-cell, .izi-today, ...).
+ *
+ * Theme hooks:  data-theme="light|dark|auto"  |  .izi-theme-dark  |  .dark .izi-container (v4)
+ * Holiday hooks: [data-holiday-type="official|religious|weekly"], [data-loading], [data-estimated]
+ */
+
+/* ========================== tokens ========================== */
+.izi-container {
+  --izi-primary: #3b82f6;
+  --izi-primary-dark: #2563eb;
+  --izi-primary-soft: #eff6ff;
+  --izi-primary-text: #1d4ed8; /* text-safe blue: >= 4.5:1 on white and on the soft tint */
+  --izi-sel-a: #2563eb;
+  --izi-sel-b: #1d4ed8;
+  --izi-faded: #5b6472;
+  --izi-glow: rgba(59, 130, 246, 0.25);
+  --izi-on-primary: #fff;
+  --izi-bg: #fff;
+  --izi-surface: #f9fafb;
+  --izi-border: #e5e7eb;
+  --izi-text: #1f2937;
+  --izi-text-2: #6b7280;
+  --izi-text-muted: #9ca3af;
+  --izi-hover: rgba(59, 130, 246, 0.1);
+  --izi-range: #e8f0ff;
+  --izi-weekend-bg: #fffbeb;
+  --izi-weekend-text: #9a4806;
+  --izi-official-bg: #fef2f2;
+  --izi-official-text: #b91c1c;
+  --izi-religious-bg: #f5f3ff;
+  --izi-religious-text: #6d28d9;
+  --izi-weekly-bg: #fff1f2;
+  --izi-weekly-text: #be123c;
+  --izi-danger: #b91c1c;
+  --izi-success: #047857;
+  --izi-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  --izi-radius: 16px;
+  --izi-radius-sm: 10px;
+  --izi-cell-radius: 12px;
+  --izi-cell-ratio: 1 / 1;
+  --izi-gap: 0.286em;
+  --izi-width: 340px;
+  --izi-font: 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  --izi-font-size: 14px;
+  --izi-ease: 160ms ease;
+  color-scheme: light;
+}
+
+.izi-container.izi-theme-dark,
+.izi-container[data-theme='dark'],
+.dark .izi-container {
+  --izi-primary: #60a5fa;
+  --izi-primary-dark: #3b82f6;
+  --izi-primary-soft: #1e293b;
+  --izi-primary-text: #60a5fa;
+  --izi-sel-a: #60a5fa;
+  --izi-sel-b: #3b82f6;
+  --izi-faded: #94a3b8;
+  --izi-glow: rgba(96, 165, 250, 0.25);
+  --izi-on-primary: #0b1220;
+  --izi-bg: #0f172a;
+  --izi-surface: #1e293b;
+  --izi-border: #334155;
+  --izi-text: #f1f5f9;
+  --izi-text-2: #94a3b8;
+  --izi-text-muted: #64748b;
+  --izi-hover: rgba(96, 165, 250, 0.15);
+  --izi-range: #183049;
+  --izi-weekend-bg: #3a2a1a;
+  --izi-weekend-text: #fbbf24;
+  --izi-official-bg: #3b1e1e;
+  --izi-official-text: #f87171;
+  --izi-religious-bg: #2a2147;
+  --izi-religious-text: #a78bfa;
+  --izi-weekly-bg: #3b1d27;
+  --izi-weekly-text: #fb7185;
+  --izi-danger: #f87171;
+  --izi-success: #34d399;
+  --izi-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  .izi-container[data-theme='auto'] {
+    --izi-primary: #60a5fa;
+    --izi-primary-dark: #3b82f6;
+    --izi-primary-soft: #1e293b;
+    --izi-primary-text: #60a5fa;
+    --izi-sel-a: #60a5fa;
+    --izi-sel-b: #3b82f6;
+    --izi-faded: #94a3b8;
+    --izi-glow: rgba(96, 165, 250, 0.25);
+    --izi-on-primary: #0b1220;
+    --izi-bg: #0f172a;
+    --izi-surface: #1e293b;
+    --izi-border: #334155;
+    --izi-text: #f1f5f9;
+    --izi-text-2: #94a3b8;
+    --izi-text-muted: #64748b;
+    --izi-hover: rgba(96, 165, 250, 0.15);
+    --izi-range: #183049;
+    --izi-weekend-bg: #3a2a1a;
+    --izi-weekend-text: #fbbf24;
+    --izi-official-bg: #3b1e1e;
+    --izi-official-text: #f87171;
+    --izi-religious-bg: #2a2147;
+    --izi-religious-text: #a78bfa;
+    --izi-weekly-bg: #3b1d27;
+    --izi-weekly-text: #fb7185;
+    --izi-danger: #f87171;
+    --izi-success: #34d399;
+    --izi-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+
+/* ========================== container ========================== */
+.izi-container {
+  position: fixed; /* positioned from viewport coordinates by the controller */
+  top: 0; /* physical on purpose: the controller sets left/top in px; a logical inset would override `left` in RTL */
+  left: 0;
+  z-index: 10000;
+  box-sizing: border-box;
+  inline-size: calc(var(--izi-width) * var(--izi-n, 1));
+  max-inline-size: calc(100vw - 8px);
+  overflow: hidden;
+  background: var(--izi-bg);
+  color: var(--izi-text);
+  border: 1px solid var(--izi-border);
+  border-radius: var(--izi-radius);
+  box-shadow: var(--izi-shadow);
+  font-family: var(--izi-font);
+  font-size: var(--izi-font-size);
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+  animation: izi-in 140ms ease-out;
+}
+.izi-container *, .izi-container *::before, .izi-container *::after { box-sizing: border-box; }
+.izi-container[hidden], .izi-container [hidden] { display: none !important; } /* author display rules must never defeat the hidden attribute */
+.izi-container.inline { position: relative; inset: auto; box-shadow: none; animation: none; }
+.izi-container:focus { outline: none; }
+.izi-container[data-placement='top'] { transform-origin: bottom; }
+
+.izi-size-xs { --izi-width: 260px; --izi-font-size: 11.5px; }
+.izi-size-sm, .izi-size-small { --izi-width: 300px; --izi-font-size: 12.5px; }
+.izi-size-md { --izi-width: 340px; --izi-font-size: 14px; }
+.izi-size-lg, .izi-size-large { --izi-width: 400px; --izi-font-size: 16px; }
+.izi-size-xl { --izi-width: 480px; --izi-font-size: 18px; }
+.izi-size-fluid { --izi-width: 100%; max-inline-size: none; }
+
+@keyframes izi-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* ========================== preview ========================== */
+.izi-preview {
+  padding: 0.857em;
+  text-align: center;
+  background: linear-gradient(135deg, var(--izi-primary-soft), transparent);
+  border-block-end: 1px solid var(--izi-border);
+}
+.izi-preview-year {
+  font-size: 1.5em;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--izi-primary), #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.izi-preview-full { font-size: 0.8em; color: var(--izi-text-2); min-block-size: 1.4em; }
+
+/* ========================== header ========================== */
+.izi-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.571em;
+  padding: 0.714em 0.857em;
+  background: var(--izi-surface);
+  border-block-end: 1px solid var(--izi-border);
+}
+.izi-nav-btn {
+  flex: none;
+  inline-size: 2.57em;
+  block-size: 2.57em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  color: var(--izi-text-2);
+  background: var(--izi-bg);
+  border: 1px solid var(--izi-border);
+  border-radius: var(--izi-radius-sm);
+  transition: var(--izi-ease);
+  transition-property: color, background-color, border-color;
+}
+.izi-nav-btn:hover:not(:disabled) { color: var(--izi-primary-text); border-color: var(--izi-primary); background: var(--izi-hover); }
+.izi-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+/* chevrons mirror automatically in RTL (prev sits at the inline-start edge) */
+.izi-container[dir='rtl'] .izi-nav-btn svg { transform: scaleX(-1); }
+
+.izi-month-year { display: flex; align-items: center; justify-content: center; gap: 0.429em; flex: 1; min-inline-size: 0; }
+.izi-title { font-weight: 600; }
+.izi-month-select, .izi-year-select {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: 0.429em 0.714em;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--izi-text);
+  background: var(--izi-bg);
+  border: 1px solid var(--izi-border);
+  border-radius: var(--izi-radius-sm);
+  cursor: pointer;
+  transition: var(--izi-ease);
+  transition-property: border-color, background-color;
+}
+.izi-month-select:hover, .izi-year-select:hover { border-color: var(--izi-primary); background: var(--izi-hover); }
+
+/* ========================== grid ========================== */
+.izi-calendar { padding: 0.571em 0.714em 0.714em; }
+.izi-days-grid { --izi-cols: repeat(7, minmax(0, 1fr)); display: flex; flex-direction: column; gap: var(--izi-gap); }
+.izi-days-grid.with-week-numbers { --izi-cols: 2em repeat(7, minmax(0, 1fr)); }
+.izi-weekdays, .izi-week { display: grid; grid-template-columns: var(--izi-cols); column-gap: var(--izi-gap); }
+.izi-weekdays { padding-block: 0.286em 0.429em; text-align: center; border-block-end: 1px solid var(--izi-border); margin-block-end: 0.143em; }
+.izi-weekday { font-size: 0.9em; font-weight: 700; color: var(--izi-primary-text); }
+.izi-weekno, .izi-weekno-head { display: flex; align-items: center; justify-content: center; font-size: 0.75em; color: var(--izi-text-2); }
+
+.izi-day-cell {
+  position: relative;
+  aspect-ratio: var(--izi-cell-ratio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--izi-cell-radius);
+  border: 1px solid transparent;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  color: var(--izi-text);
+  background: transparent;
+  transition: var(--izi-ease);
+  transition-property: background-color, color, box-shadow;
+}
+.izi-day-cell.izi-faded { color: var(--izi-faded); font-weight: 400; } /* no opacity: keeps contrast >= 4.5:1 */
+
+/* weekend (visual only) */
+.izi-day-cell.izi-weekend-cell { background: var(--izi-weekend-bg); color: var(--izi-weekend-text); }
+
+/* holidays - precedence: holiday > weekend. Style per type via data attribute. */
+.izi-day-cell.izi-holiday-cell { font-weight: 600; background: var(--izi-official-bg); color: var(--izi-official-text); }
+.izi-day-cell[data-holiday-type='religious'] { background: var(--izi-religious-bg); color: var(--izi-religious-text); }
+.izi-day-cell[data-holiday-type='weekly'] { background: var(--izi-weekly-bg); color: var(--izi-weekly-text); }
+.izi-day-cell[data-holiday-type='official'] { background: var(--izi-official-bg); color: var(--izi-official-text); }
+/* approximate (Hijri estimate) holidays get a dotted marker */
+.izi-day-cell[data-estimated]::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 3px;
+  inset-inline: 30% ;
+  border-block-end: 2px dotted currentColor;
+  opacity: 0.7;
+}
+/* a lazily-loading year: calm shimmer instead of flashing from "workday" to "holiday" */
+.izi-day-cell[data-loading] { animation: izi-shimmer 1.1s ease-in-out infinite alternate; }
+@keyframes izi-shimmer { from { background-color: transparent; } to { background-color: var(--izi-hover); } }
+
+.izi-day-cell:hover:not(.izi-disabled):not(.izi-selected-start):not(.izi-selected-end) { background: var(--izi-hover); }
+
+.izi-day-cell.izi-today { background: var(--izi-primary-soft); color: var(--izi-primary-text); border-color: var(--izi-primary); font-weight: 700; }
+
+/* range band: strict interior; endpoints are the selected cells */
+.izi-day-cell.izi-range-between {
+  background: var(--izi-range);
+  border-radius: 0;
+  box-shadow: calc(var(--izi-gap) * -1) 0 0 var(--izi-range), var(--izi-gap) 0 0 var(--izi-range);
+}
+.izi-day-cell.izi-range-preview:not(.izi-selected-start):not(.izi-selected-end) { background: var(--izi-range); opacity: 0.7; border-radius: 0; box-shadow: calc(var(--izi-gap) * -1) 0 0 var(--izi-range), var(--izi-gap) 0 0 var(--izi-range); }
+
+.izi-day-cell.izi-selected-start, .izi-day-cell.izi-selected-end {
+  background: linear-gradient(135deg, var(--izi-sel-a), var(--izi-sel-b));
+  color: var(--izi-on-primary);
+  font-weight: 700;
+  border-color: transparent;
+  box-shadow: 0 2px 8px var(--izi-glow);
+}
+/* flatten the inner edge so the band connects (logical => correct in RTL and LTR) */
+.izi-day-cell.izi-selected-start.izi-has-range:not(.izi-selected-end) {
+  border-start-end-radius: 0; border-end-end-radius: 0;
+  box-shadow: var(--izi-gap) 0 0 var(--izi-range), 0 2px 8px var(--izi-glow);
+}
+.izi-day-cell.izi-selected-end.izi-has-range:not(.izi-selected-start) {
+  border-start-start-radius: 0; border-end-start-radius: 0;
+  box-shadow: calc(var(--izi-gap) * -1) 0 0 var(--izi-range), 0 2px 8px var(--izi-glow);
+}
+
+.izi-day-cell.izi-disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; text-decoration-thickness: 1px; }
+
+/* keyboard focus - always visible */
+.izi-day-cell:focus { outline: none; }
+.izi-day-cell:focus-visible, .izi-container button:focus-visible, .izi-container select:focus-visible {
+  outline: 2px solid var(--izi-primary);
+  outline-offset: 2px;
+}
+
+/* ========================== time ========================== */
+.izi-time-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.571em;
+  padding: 0.714em 0.857em;
+  background: var(--izi-surface);
+  border-block-start: 1px solid var(--izi-border);
+}
+.izi-time-block { display: flex; align-items: center; justify-content: space-between; gap: 0.714em; flex-wrap: wrap; }
+.izi-time-label { display: inline-flex; align-items: center; gap: 0.286em; font-size: 0.8em; font-weight: 600; color: var(--izi-text-2); }
+.izi-time-selectors {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.286em;
+  padding: 0.214em 0.571em;
+  background: var(--izi-bg);
+  border: 1px solid var(--izi-border);
+  border-radius: var(--izi-radius-sm);
+  direction: ltr; /* clocks read left-to-right in both locales */
+}
+.izi-time-select {
+  padding: 0.286em 0.429em;
+  font: inherit;
+  font-size: 0.9em;
+  font-variant-numeric: tabular-nums;
+  color: var(--izi-text);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.izi-time-select:hover { background: var(--izi-hover); color: var(--izi-primary-text); }
+.izi-time-sep { font-weight: 700; color: var(--izi-text-2); }
+
+/* ========================== footer ========================== */
+.izi-footer { display: flex; gap: 0.571em; padding: 0.714em 0.857em; border-block-start: 1px solid var(--izi-border); background: var(--izi-bg); }
+.izi-footer[hidden] { display: none; }
+.izi-btn {
+  flex: 1;
+  min-inline-size: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.429em;
+  padding: 0.571em 0.714em;
+  font: inherit;
+  font-size: 0.85em;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--izi-text);
+  background: var(--izi-bg);
+  border: 1px solid var(--izi-border);
+  border-radius: var(--izi-radius-sm);
+  cursor: pointer;
+  transition: var(--izi-ease);
+  transition-property: border-color, background-color, color;
+}
+.izi-btn svg { flex: none; }
+.izi-btn:hover:not(:disabled) { border-color: currentColor; background: var(--izi-hover); }
+.izi-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.izi-btn[data-action='today'] { color: var(--izi-primary-text); }
+.izi-btn[data-action='clear'] { color: var(--izi-danger); }
+.izi-btn[data-action='cancel'] { color: var(--izi-text-2); }
+.izi-btn.izi-btn-primary { color: var(--izi-success); }
+
+/* ========================== a11y helpers ========================== */
+.izi-live { position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+input.izi-invalid, input[aria-invalid='true'].izi-invalid { outline: 2px solid var(--izi-danger, #ef4444); outline-offset: 1px; }
+
+/* ========================== responsive / motion / contrast ========================== */
+@media (max-width: 400px) {
+  .izi-container { --izi-width: 300px; }
+  .izi-btn { font-size: 0.8em; padding-inline: 6px; }
+  .izi-days-grid { --izi-gap: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .izi-container, .izi-day-cell, .izi-btn, .izi-nav-btn { animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+  .izi-day-cell.izi-selected-start, .izi-day-cell.izi-selected-end { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+  .izi-day-cell.izi-today { outline: 1px solid CanvasText; }
+  .izi-day-cell.izi-disabled { text-decoration: line-through; }
+}
+
+
+/* ========================== v5.1 additions ========================== */
+
+/* quick-range chips */
+.izi-presets { display: flex; gap: 0.429em; padding: 0.571em 0.857em; overflow-x: auto; scrollbar-width: none; border-block-end: 1px solid var(--izi-border); background: var(--izi-surface); }
+.izi-presets::-webkit-scrollbar { display: none; }
+.izi-presets[hidden] { display: none; }
+.izi-chip { flex: none; padding: 0.357em 0.857em; font: inherit; font-size: 0.8em; font-weight: 600; color: var(--izi-text-2); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: 7.071em; cursor: pointer; white-space: nowrap; transition: var(--izi-ease); transition-property: color, background-color, border-color; }
+.izi-chip:hover { color: var(--izi-primary-text); border-color: var(--izi-primary); }
+.izi-chip.izi-chip-active { color: var(--izi-on-primary); background: var(--izi-sel-a); border-color: var(--izi-sel-a); }
+
+/* year button + year grid */
+.izi-year-btn { min-inline-size: 5.429em; padding: 0.429em 0.857em; font: inherit; font-weight: 700; font-size: 0.9em; color: var(--izi-text); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: var(--izi-radius-sm); cursor: pointer; }
+.izi-year-btn:hover, .izi-year-btn[aria-expanded='true'] { border-color: var(--izi-primary); background: var(--izi-hover); color: var(--izi-primary-text); }
+.izi-years[hidden] { display: none; }
+.izi-years-head { display: flex; align-items: center; justify-content: space-between; padding-block-end: 0.571em; }
+.izi-years-label { font-weight: 700; }
+.izi-years-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--izi-gap); }
+.izi-year-cell { padding: 1em 0.286em; font: inherit; font-weight: 600; color: var(--izi-text); background: transparent; border: 1px solid transparent; border-radius: var(--izi-cell-radius); cursor: pointer; }
+.izi-year-cell:hover:not(:disabled) { background: var(--izi-hover); }
+.izi-year-cell.izi-year-today { border-color: var(--izi-primary); color: var(--izi-primary-text); }
+.izi-year-cell.izi-year-selected { background: linear-gradient(135deg, var(--izi-sel-a), var(--izi-sel-b)); color: var(--izi-on-primary); border-color: transparent; }
+.izi-year-cell:disabled { opacity: 0.3; cursor: not-allowed; }
+.izi-year-cell:focus-visible { outline: 2px solid var(--izi-primary); outline-offset: 2px; }
+
+/* month-only grid */
+.izi-month-grid { display: flex; flex-direction: column; gap: var(--izi-gap); padding-block: 0.286em; }
+.izi-month-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--izi-gap); }
+.izi-month-cell { aspect-ratio: 16 / 9; font-weight: 600; }
+
+/* secondary calendar label under the day number */
+.izi-day-cell .izi-d { line-height: 1.1; }
+.izi-day-cell .izi-sec { display: block; font-size: 0.72em; line-height: 1; font-weight: 400; } /* inherits the cell colour => same contrast as the day number */
+.with-secondary .izi-day-cell { flex-direction: column; gap: 0.071em; }
+
+/* week-mode / multiple helpers: nothing extra; selection reuses .izi-selected-* */
+.izi-calendar { touch-action: pan-y; }
+
+/* ---- mobile: touch targets and bottom sheet ---- */
+@media (pointer: coarse) {
+  .izi-nav-btn { inline-size: 44px; block-size: 44px; }
+  .izi-btn, .izi-chip, .izi-month-select, .izi-year-select, .izi-year-btn { min-block-size: 44px; }
+  .izi-time-select { min-block-size: 36px; }
+}
+.izi-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); animation: izi-fade 160ms ease-out; }
+@keyframes izi-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes izi-sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+.izi-container.izi-sheet {
+  inset-block: auto 0;
+  inset-inline: 0;
+  inline-size: 100%;
+  max-inline-size: none;
+  max-block-size: 92dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 20px 20px 0 0;
+  border-inline: 0;
+  border-block-end: 0;
+  padding-block-end: env(safe-area-inset-bottom, 0);
+  animation: izi-sheet-in 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.izi-sheet .izi-day-cell { aspect-ratio: auto; min-block-size: 46px; }
+.izi-sheet .izi-footer { position: sticky; inset-block-end: 0; }
+@media (prefers-reduced-motion: reduce) { .izi-backdrop, .izi-container.izi-sheet { animation: none !important; } }
+
+
+/* ========================== v5.2: customisation ========================== */
+
+/* accent colour: ONE variable re-derives the whole palette (set via options.accent / colors.primary) */
+.izi-has-accent {
+  --izi-primary: var(--izi-accent);
+  --izi-primary-text: var(--izi-accent);
+  --izi-sel-a: var(--izi-accent);
+  --izi-sel-b: color-mix(in srgb, var(--izi-accent) 78%, #000);
+  --izi-primary-soft: color-mix(in srgb, var(--izi-accent) 9%, var(--izi-bg));
+  --izi-hover: color-mix(in srgb, var(--izi-accent) 12%, transparent);
+  --izi-range: color-mix(in srgb, var(--izi-accent) 13%, var(--izi-bg));
+  --izi-glow: color-mix(in srgb, var(--izi-accent) 30%, transparent);
+}
+.izi-has-accent.izi-theme-dark, .izi-has-accent[data-theme='dark'], .dark .izi-has-accent {
+  --izi-primary-text: color-mix(in srgb, var(--izi-accent) 55%, #fff);
+  --izi-sel-a: color-mix(in srgb, var(--izi-accent) 62%, #fff);
+  --izi-sel-b: color-mix(in srgb, var(--izi-accent) 80%, #fff);
+}
+@media (prefers-color-scheme: dark) {
+  .izi-has-accent[data-theme='auto'] {
+    --izi-primary-text: color-mix(in srgb, var(--izi-accent) 55%, #fff);
+    --izi-sel-a: color-mix(in srgb, var(--izi-accent) 62%, #fff);
+    --izi-sel-b: color-mix(in srgb, var(--izi-accent) 80%, #fff);
+  }
+}
+
+/* cell shape + density */
+.izi-shape-circle { --izi-cell-radius: 50%; }
+.izi-shape-square { --izi-cell-radius: 0; }
+.izi-shape-circle .izi-day-cell.izi-range-between, .izi-shape-square .izi-day-cell.izi-range-between { border-radius: 0; }
+.izi-density-compact { --izi-cell-ratio: 1 / 0.78; --izi-gap: 0.14em; }
+.izi-density-comfortable { --izi-cell-ratio: 1 / 1; --izi-gap: 0.43em; }
+.izi-density-compact .izi-calendar { padding-block: 0.3em 0.5em; }
+.izi-density-comfortable .izi-calendar { padding: 0.8em 0.9em 1em; }
+
+/* elevation */
+.izi-shadow-none { --izi-shadow: none; }
+.izi-shadow-sm { --izi-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08); }
+.izi-shadow-md { --izi-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.15); }
+.izi-shadow-lg { --izi-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); }
+
+/* visibility switches */
+.izi-no-weekend .izi-day-cell.izi-weekend-cell { background: transparent; color: var(--izi-text); font-weight: 500; }
+.izi-no-weekend .izi-day-cell.izi-weekend-cell.izi-faded { color: var(--izi-faded); }
+.izi-no-holiday .izi-day-cell.izi-holiday-cell, .izi-no-holiday .izi-day-cell[data-holiday-type] { background: transparent; color: var(--izi-text); font-weight: 500; }
+.izi-no-holiday .izi-day-cell.izi-holiday-cell.izi-faded { color: var(--izi-faded); }
+.izi-no-today .izi-day-cell.izi-today:not(.izi-selected-start):not(.izi-selected-end) { background: transparent; color: inherit; border-color: transparent; font-weight: 500; }
+.izi-anim-none, .izi-anim-none * { animation: none !important; transition: none !important; }
+.izi-day-cell.izi-empty { visibility: hidden; pointer-events: none; }
+.izi-weekdays-long .izi-weekday { font-size: 0.72em; overflow: hidden; text-overflow: clip; white-space: nowrap; }
+.izi-weekdays-short .izi-weekday { font-size: 0.8em; }
+
+/* ========================== v5.2: quick-range bar (scroll / drag / wrap) ========================== */
+.izi-presets-bar { position: relative; display: flex; align-items: center; direction: ltr; border-block-end: 1px solid var(--izi-border); background: var(--izi-surface); }
+.izi-presets-bar.izi-presets-bottom { border-block-end: 0; border-block-start: 1px solid var(--izi-border); }
+.izi-presets-bar[hidden] { display: none !important; }
+.izi-presets-bar .izi-presets { flex: 1; min-inline-size: 0; border: 0; background: transparent; direction: ltr; cursor: grab; scroll-behavior: smooth; overscroll-behavior-x: contain; }
+.izi-container[dir='rtl'] .izi-presets-bar .izi-presets { direction: rtl; }
+.izi-presets.izi-dragging { cursor: grabbing; scroll-behavior: auto; user-select: none; }
+.izi-presets.izi-dragging .izi-chip { pointer-events: none; }
+.izi-presets-nav { flex: none; inline-size: 1.9em; block-size: 1.9em; margin-inline: 0.2em; padding: 0; display: inline-flex; align-items: center; justify-content: center; font: inherit; font-size: 1.1em; line-height: 1; color: var(--izi-text-2); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: 50%; cursor: pointer; }
+.izi-presets-nav:hover:not(:disabled) { color: var(--izi-primary-text); border-color: var(--izi-primary); }
+.izi-presets-nav:disabled { opacity: 0.3; cursor: default; }
+.izi-presets-bar.izi-presets-nonav .izi-presets-nav, .izi-presets-bar.izi-presets-wrapped .izi-presets-nav { display: none; }
+/* edge fades tell the user there is more to see */
+.izi-presets-bar[data-more~='start'] .izi-presets { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1.6em); mask-image: linear-gradient(to right, transparent 0, #000 1.6em); }
+.izi-presets-bar[data-more~='end'] .izi-presets { -webkit-mask-image: linear-gradient(to left, transparent 0, #000 1.6em); mask-image: linear-gradient(to left, transparent 0, #000 1.6em); }
+.izi-presets-bar[data-more~='start'][data-more~='end'] .izi-presets { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1.6em, #000 calc(100% - 1.6em), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 1.6em, #000 calc(100% - 1.6em), transparent 100%); }
+/* wrap layout: show every chip at once */
+.izi-presets-bar.izi-presets-wrapped .izi-presets { flex-wrap: wrap; overflow: visible; cursor: default; -webkit-mask-image: none; mask-image: none; }
+.izi-chip[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; text-decoration: line-through; text-decoration-thickness: 1px; }
+.izi-chip[aria-disabled='true']:hover { color: var(--izi-text-2); border-color: var(--izi-border); }
+
+/* today inside a range keeps its accent border but uses the normal text colour (accent-on-band can dip below AA) */
+.izi-day-cell.izi-today.izi-range-between, .izi-day-cell.izi-today.izi-range-preview { color: var(--izi-text); }
+
+/* ========================== v5.3: several months side by side + drag selection ========================== */
+.izi-months-2 { --izi-n: 2; }
+.izi-months-3 { --izi-n: 3; }
+.izi-size-fluid { --izi-n: 1; }
+.izi-months-row { display: flex; flex-wrap: wrap; gap: 1em; align-items: flex-start; }
+/* a column never gets narrower than one calendar: when the container is too narrow the months wrap underneath each other */
+.izi-cal-col { flex: 1 1 calc(var(--izi-width) - 2.2em); min-inline-size: 0; }
+.izi-container.inline.izi-multi { max-inline-size: 100%; }
+.izi-cal-caption { text-align: center; font-weight: 700; padding-block: 0.15em 0.4em; color: var(--izi-text); }
+.izi-sheet.izi-multi { --izi-n: 1; }
+.izi-sheet .izi-months-row { flex-direction: column; gap: 1.2em; }
+.izi-sheet .izi-cal-col { inline-size: 100%; flex: none; }
+.izi-calendar { user-select: none; -webkit-user-select: none; }
+
+/* ========================== v5.3: holiday list (side / bottom), type filter, export ========================== */
+.izi-container.izi-hl-side { display: flex; flex-direction: row; align-items: stretch; --izi-hl-w: 15.5em; inline-size: calc(var(--izi-width) * var(--izi-n, 1) + var(--izi-hl-w)); max-inline-size: calc(100vw - 8px); }
+.izi-main { flex: 1 1 auto; min-inline-size: 0; }
+.izi-hlist { display: flex; flex-direction: column; gap: 0.5em; padding: 0.7em 0.8em; background: var(--izi-surface); min-inline-size: 0; }
+.izi-hl-side .izi-hlist { flex: none; inline-size: var(--izi-hl-w); border-inline-start: 1px solid var(--izi-border); }
+.izi-container:not(.izi-hl-side) .izi-hlist { border-block-start: 1px solid var(--izi-border); max-block-size: 14em; }
+.izi-hl-title { font-weight: 700; font-size: 0.95em; }
+.izi-hl-chips { display: flex; flex-wrap: wrap; gap: 0.35em; }
+.izi-hl-chip { padding: 0.25em 0.7em; font: inherit; font-size: 0.78em; font-weight: 600; color: var(--izi-text-2); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: 99px; cursor: pointer; }
+.izi-hl-chip[aria-pressed='true'] { color: var(--izi-on-primary); background: var(--izi-sel-a); border-color: var(--izi-sel-a); }
+.izi-hl-chip[data-type='official'][aria-pressed='true'] { background: var(--izi-official-text); border-color: var(--izi-official-text); color: #fff; }
+.izi-hl-chip[data-type='religious'][aria-pressed='true'] { background: var(--izi-religious-text); border-color: var(--izi-religious-text); color: #fff; }
+.izi-hl-chip[data-type='weekly'][aria-pressed='true'] { background: var(--izi-weekly-text); border-color: var(--izi-weekly-text); color: #fff; }
+.izi-hl-list { list-style: none; margin: 0; padding: 0; flex: 1 1 auto; overflow-y: auto; display: flex; flex-direction: column; gap: 0.25em; min-block-size: 4em; }
+.izi-hl-item { inline-size: 100%; display: grid; grid-template-columns: 2em auto 1fr; align-items: center; gap: 0.5em; padding: 0.35em 0.5em; font: inherit; font-size: 0.85em; text-align: start; color: var(--izi-text); background: var(--izi-bg); border: 1px solid var(--izi-border); border-inline-start-width: 4px; border-radius: var(--izi-radius-sm); cursor: pointer; }
+.izi-hl-item:hover { background: var(--izi-hover); }
+.izi-hl-item[data-type='official'] { border-inline-start-color: var(--izi-official-text); }
+.izi-hl-item[data-type='religious'] { border-inline-start-color: var(--izi-religious-text); }
+.izi-hl-item[data-type='weekly'] { border-inline-start-color: var(--izi-weekly-text); }
+.izi-hl-day { font-weight: 800; text-align: center; }
+.izi-hl-wd { color: var(--izi-text-2); font-size: 0.85em; }
+.izi-hl-name { min-inline-size: 0; overflow-wrap: anywhere; }
+.izi-hl-empty { color: var(--izi-text-2); font-size: 0.85em; padding: 0.4em 0; }
+.izi-hl-export { display: flex; align-items: center; gap: 0.4em; flex-wrap: wrap; }
+.izi-hl-export-label { font-size: 0.78em; color: var(--izi-text-2); }
+.izi-hl-export-btn { padding: 0.25em 0.8em; font: inherit; font-size: 0.78em; font-weight: 700; color: var(--izi-primary-text); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: var(--izi-radius-sm); cursor: pointer; }
+.izi-hl-export-btn:hover:not(:disabled) { border-color: var(--izi-primary); background: var(--izi-hover); }
+.izi-hl-export-btn:disabled { opacity: 0.45; cursor: wait; }
+.izi-hlist button:focus-visible { outline: 2px solid var(--izi-primary); outline-offset: 2px; }
+.izi-sheet.izi-hl-side { flex-direction: column; inline-size: 100%; }
+.izi-sheet.izi-hl-side .izi-hlist { inline-size: 100%; border-inline-start: 0; border-block-start: 1px solid var(--izi-border); max-block-size: 16em; }
+
+/* ========================== v5.3: time-only, time range, booking slots ========================== */
+.izi-container.izi-time-only { inline-size: auto; min-inline-size: 17em; }
+.izi-time-only .izi-time-section { border-block-start: 0; padding: 0.9em 1em; background: var(--izi-bg); }
+.izi-time-only .izi-time-select { font-size: 1.15em; padding: 0.4em 0.5em; }
+.izi-slots-wrap { padding: 0.7em 0.8em; background: var(--izi-surface); border-block-start: 1px solid var(--izi-border); }
+.izi-slots-hint { font-size: 0.82em; color: var(--izi-text-2); padding-block-end: 0.4em; }
+.izi-slots { display: grid; grid-template-columns: repeat(var(--izi-slot-cols, 3), minmax(0, 1fr)); gap: 0.4em; max-block-size: 14em; overflow-y: auto; }
+.izi-slot { padding: 0.55em 0.3em; font: inherit; font-size: 0.82em; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--izi-text); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: var(--izi-radius-sm); cursor: pointer; transition: var(--izi-ease); transition-property: background-color, border-color, color; }
+.izi-slot:hover:not([aria-disabled='true']) { border-color: var(--izi-primary); background: var(--izi-hover); }
+.izi-slot.izi-slot-selected { color: var(--izi-on-primary); background: linear-gradient(135deg, var(--izi-sel-a), var(--izi-sel-b)); border-color: transparent; }
+.izi-slot[aria-disabled='true'] { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; text-decoration-thickness: 1px; }
+.izi-slot:focus-visible { outline: 2px solid var(--izi-primary); outline-offset: 2px; }
+
+/* ========================== v5.3: compare two ranges ========================== */
+.izi-compare { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 0.8em; padding: 0.6em 0.9em; background: var(--izi-surface); border-block-start: 1px solid var(--izi-border); font-size: 0.9em; }
+.izi-cmp-toggle { display: inline-flex; align-items: center; gap: 0.4em; font-weight: 600; cursor: pointer; }
+.izi-cmp-check { inline-size: 1.15em; block-size: 1.15em; accent-color: var(--izi-accent, var(--izi-sel-a)); cursor: pointer; }
+.izi-cmp-mode { font: inherit; font-size: 0.95em; padding: 0.3em 0.6em; color: var(--izi-text); background: var(--izi-bg); border: 1px solid var(--izi-border); border-radius: var(--izi-radius-sm); }
+.izi-cmp-mode:disabled { opacity: 0.5; }
+.izi-cmp-target { display: inline-flex; border: 1px solid var(--izi-border); border-radius: var(--izi-radius-sm); overflow: hidden; }
+.izi-cmp-target[hidden] { display: none; }
+.izi-cmp-tbtn { padding: 0.3em 0.7em; font: inherit; font-size: 0.85em; font-weight: 600; color: var(--izi-text-2); background: var(--izi-bg); border: 0; cursor: pointer; }
+.izi-cmp-tbtn.izi-cmp-tbtn-on { color: var(--izi-cmp-on, #fff); background: var(--izi-cmp, #b45309); }
+.izi-cmp-text { flex-basis: 100%; font-size: 0.85em; color: var(--izi-text-2); min-block-size: 1.2em; }
+.izi-compare:not(.izi-cmp-on) .izi-cmp-text:empty { display: none; }
+.izi-container { --izi-cmp: #b45309; --izi-cmp-bg: #fff4e5; --izi-cmp-text: #7c2d12; }
+.izi-container.izi-theme-dark, .izi-container[data-theme='dark'], .dark .izi-container { --izi-cmp: #fb923c; --izi-cmp-bg: #3b2a14; --izi-cmp-text: #fdba74; --izi-cmp-on: #1c1917; }
+/* comparison range: dashed amber band so it can never be confused with the main (blue) range */
+.izi-day-cell.izi-cmp-between { background: var(--izi-cmp-bg); color: var(--izi-cmp-text); border-radius: 0; box-shadow: calc(var(--izi-gap) * -1) 0 0 var(--izi-cmp-bg), var(--izi-gap) 0 0 var(--izi-cmp-bg); border-block: 1px dashed var(--izi-cmp); }
+.izi-day-cell.izi-cmp-start, .izi-day-cell.izi-cmp-end { background: var(--izi-cmp-bg); color: var(--izi-cmp-text); font-weight: 700; border: 2px dashed var(--izi-cmp); }
+.izi-day-cell.izi-selected-start.izi-cmp-start, .izi-day-cell.izi-selected-end.izi-cmp-end, .izi-day-cell.izi-selected-start.izi-cmp-end, .izi-day-cell.izi-selected-end.izi-cmp-start { background: linear-gradient(135deg, var(--izi-sel-a), var(--izi-sel-b)); color: var(--izi-on-primary); }
+
+/* ========================== holiday list: locate / peek / month groups ========================== */
+.izi-day-cell.izi-peek { outline: 2px dashed var(--izi-primary); outline-offset: 2px; }
+.izi-day-cell.izi-located { position: relative; z-index: 1; outline: 3px solid var(--izi-primary); outline-offset: 2px; animation: izi-pulse 0.7s ease-out 2; }
+@keyframes izi-pulse { 0% { box-shadow: 0 0 0 0 var(--izi-glow); transform: scale(1); } 50% { box-shadow: 0 0 0 0.6em transparent; transform: scale(1.14); } 100% { box-shadow: 0 0 0 0 transparent; transform: scale(1); } }
+.izi-hl-month { position: sticky; inset-block-start: 0; z-index: 1; padding: 0.35em 0.2em 0.15em; font-weight: 800; font-size: 0.78em; color: var(--izi-text-2); background: var(--izi-surface); }
+.izi-hl-item:focus-visible { outline: 2px solid var(--izi-primary); outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) { .izi-day-cell.izi-located { animation: none !important; } }
+
+/* ---- holiday list must never grow the popup: side panel = height of the calendar column, list scrolls inside ---- */
+.izi-hl-side:not(.izi-sheet) > .izi-hlist { contain: size; min-block-size: 18em; overflow: hidden; }
+.izi-hlist .izi-hl-list { min-block-size: 0; }
+.izi-container:not(.izi-hl-side) .izi-hlist, .izi-sheet.izi-hl-side .izi-hlist { overflow: hidden; }
+@supports not (contain: size) { .izi-hl-side:not(.izi-sheet) > .izi-hlist { max-block-size: 34em; } }
+/* a popup is never taller than the viewport: it scrolls instead of being cut off */
+.izi-container:not(.inline):not(.izi-sheet) { max-block-size: calc(100vh - 16px); max-block-size: calc(100dvh - 16px); overflow-y: auto; overscroll-behavior: contain; }
